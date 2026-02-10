@@ -95,7 +95,7 @@ export async function saveUnitMixAction(
       const validated = unitMixSchema.parse(unit)
 
       const dbData = {
-        id: validated.id,
+        ...(validated.id ? { id: validated.id } : {}),
         unit_type: validated.unitType,
         unit_count: validated.unitCount,
         current_rent: validated.currentRent,
