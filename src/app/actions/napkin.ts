@@ -9,7 +9,6 @@ import {
   calculateCapRate,
   calculateExpenseRatio,
   calculateCashFlow,
-  calculateCashOnCashReturn,
   calculateMaxOfferPrice,
 } from '@/lib/calculations/napkin'
 import { calculateLoanAmount, calculateAnnualDebtService } from '@/lib/calculations/loan'
@@ -58,8 +57,6 @@ export async function runNapkinAnalysis(dealId: number, input: NapkinInput) {
     const equityInvested = deal.asking_price
       ? deal.asking_price * validated.downPaymentPct
       : 0
-
-    const cashOnCashReturn = calculateCashOnCashReturn(cashFlow, equityInvested)
 
     // Calculate maximum offer price
     const exitCapRate = capRate > 0 ? capRate * 1.1 : 0.09 // 10% higher than purchase or 9% default
@@ -131,10 +128,8 @@ export async function runNapkinAnalysis(dealId: number, input: NapkinInput) {
       success: true,
       result: {
         noi,
-        maxOfferPrice,
         annualDebtService,
         cashFlow,
-        cashOnCashReturn,
         equityInvested,
         equityMultiple: estimatedEquityMultiple,
         ...aiResult,
