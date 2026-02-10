@@ -59,10 +59,10 @@ export async function saveCompAction(
       city: validated.city,
       state: validated.state,
       units: validated.units,
-      sale_price: validated.salePrice.toString(),
+      sale_price: validated.salePrice,
       sale_date: validated.saleDate,
-      cap_rate: validated.capRate.toString(),
-      price_per_unit: pricePerUnit.toString(),
+      cap_rate: validated.capRate,
+      price_per_unit: pricePerUnit,
       notes: validated.notes || null,
     })
 
