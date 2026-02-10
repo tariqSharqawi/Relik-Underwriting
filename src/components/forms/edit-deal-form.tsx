@@ -50,7 +50,7 @@ export function EditDealForm({ deal }: EditDealFormProps) {
       name: deal.name,
       city: deal.city || '',
       state: deal.state || '',
-      property_type: deal.property_type || undefined,
+      property_type: (deal.property_type as UpdateDealInput['property_type']) || undefined,
       total_units: deal.total_units || undefined,
       licensed_beds: deal.licensed_beds || undefined,
       asking_price: deal.asking_price ? Number(deal.asking_price) : undefined,

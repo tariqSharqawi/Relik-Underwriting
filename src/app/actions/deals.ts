@@ -4,9 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createDeal, updateDeal, deleteDeal } from '@/lib/db/deals'
 import { createDealSchema, updateDealSchema } from '@/lib/validations/deal'
-import type { CreateDealInput, UpdateDealInput } from '@/lib/validations/deal'
+import type { UpdateDealInput } from '@/lib/validations/deal'
+import type { z } from 'zod'
 
-export async function createDealAction(input: CreateDealInput) {
+export async function createDealAction(input: z.input<typeof createDealSchema>) {
   try {
     const validated = createDealSchema.parse(input)
     const deal = await createDeal(validated)

@@ -47,7 +47,7 @@ export function T12Chart({ data }: T12ChartProps) {
             className="text-muted-foreground"
           />
           <Tooltip
-            formatter={(value: number) => formatCurrency(value)}
+            formatter={(value: number | undefined) => formatCurrency(value ?? 0)}
             contentStyle={{
               backgroundColor: 'hsl(var(--background))',
               border: '1px solid hsl(var(--border))',

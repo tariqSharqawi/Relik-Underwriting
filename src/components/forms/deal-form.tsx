@@ -24,7 +24,8 @@ import {
 } from '@/components/ui/select'
 import { toast } from 'sonner'
 import { createDealAction } from '@/app/actions/deals'
-import { createDealSchema, type CreateDealInput } from '@/lib/validations/deal'
+import { createDealSchema } from '@/lib/validations/deal'
+import type { z } from 'zod'
 
 const propertyTypeOptions = [
   { value: 'assisted_living', label: 'Assisted Living' },
@@ -37,7 +38,7 @@ export function DealForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<CreateDealInput>({
+  const form = useForm<z.input<typeof createDealSchema>>({
     resolver: zodResolver(createDealSchema),
     defaultValues: {
       name: '',
@@ -52,7 +53,7 @@ export function DealForm() {
     },
   })
 
-  async function onSubmit(values: CreateDealInput) {
+  async function onSubmit(values: z.input<typeof createDealSchema>) {
     setIsLoading(true)
 
     const result = await createDealAction(values)

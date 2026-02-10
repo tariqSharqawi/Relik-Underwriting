@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
       new Date().toISOString().split('T')[0]
     }.pdf`
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${fileName}"`,

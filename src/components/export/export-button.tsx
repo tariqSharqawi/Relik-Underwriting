@@ -39,7 +39,7 @@ export function ExportButton({
   const handleExport = async (
     type: string,
     format: 'pdf' | 'excel',
-    data?: Partial<ExportButtonProps['exportData']>
+    data?: Record<string, unknown>
   ) => {
     setIsExporting(true)
     setExportingType(`${type}-${format}`)

@@ -52,8 +52,8 @@ export function ExpenseBreakdown({ data }: ExpenseBreakdownProps) {
     }).format(value)
 
   // Custom label to show percentage
-  const renderLabel = (entry: { percent: number }) => {
-    const percent = (entry.percent * 100).toFixed(0)
+  const renderLabel = (entry: { percent?: number }) => {
+    const percent = ((entry.percent ?? 0) * 100).toFixed(0)
     return `${percent}%`
   }
 
@@ -83,7 +83,7 @@ export function ExpenseBreakdown({ data }: ExpenseBreakdownProps) {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value: number) => formatPercent(value)}
+              formatter={(value: number | undefined) => formatPercent(value ?? 0)}
               contentStyle={{
                 backgroundColor: 'hsl(var(--background))',
                 border: '1px solid hsl(var(--border))',

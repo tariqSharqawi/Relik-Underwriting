@@ -44,7 +44,7 @@ export function CashFlowChart({ years }: CashFlowChartProps) {
             className="text-muted-foreground"
           />
           <Tooltip
-            formatter={(value: number) => formatCurrency(value)}
+            formatter={(value: number | undefined) => formatCurrency(value ?? 0)}
             contentStyle={{
               backgroundColor: 'hsl(var(--background))',
               border: '1px solid hsl(var(--border))',

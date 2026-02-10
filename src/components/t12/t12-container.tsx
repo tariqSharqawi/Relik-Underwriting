@@ -16,9 +16,33 @@ import {
   getExpenseBreakdown,
   type T12Month,
 } from '@/lib/calculations/t12'
-import type { Database } from '@/types/supabase'
 
-type UnitMixRow = Database['public']['Tables']['unit_mix']['Row']
+interface UnitMixData {
+  id?: number
+  unitType: string
+  unitCount: number
+  currentRent: number
+  marketRent: number
+  avgLocFee: number
+}
+
+interface T12MonthData {
+  id?: number
+  month: string
+  roomRent: number
+  locFees: number
+  otherIncome: number
+  occupiedUnits: number
+  payroll: number
+  dietary: number
+  utilities: number
+  insurance: number
+  managementFee: number
+  maintenance: number
+  marketing: number
+  admin: number
+  otherExpenses: number
+}
 
 interface T12ContainerProps {
   dealId: number
@@ -72,7 +96,7 @@ function generateDefaultMonths(): T12Month[] {
 
 export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
   const [t12Data, setT12Data] = useState<T12Month[]>(generateDefaultMonths())
-  const [unitMixData, setUnitMixData] = useState<UnitMixRow[]>([])
+  const [unitMixData, setUnitMixData] = useState<UnitMixData[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   // Fetch data on mount
@@ -92,7 +116,7 @@ export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
     fetchData()
   }, [dealId])
 
-  const handleSaveT12 = async (data: T12Month[]) => {
+  const handleSaveT12 = async (data: T12MonthData[]) => {
     const result = await saveT12DataAction(dealId, data)
 
     if (result.success) {
@@ -102,7 +126,7 @@ export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
     }
   }
 
-  const handleSaveUnitMix = async (data: Omit<UnitMixRow, 'id' | 'created_at'>[]) => {
+  const handleSaveUnitMix = async (data: UnitMixData[]) => {
     const result = await saveUnitMixAction(dealId, data)
 
     if (result.success) {

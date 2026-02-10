@@ -76,6 +76,7 @@ export function CompsContainer({ dealId, deal, existingComps }: CompsContainerPr
         setComps((prev) => [
           {
             ...values,
+            notes: values.notes || '',
             pricePerUnit: values.salePrice / values.units,
             source: 'manual' as const,
           },
