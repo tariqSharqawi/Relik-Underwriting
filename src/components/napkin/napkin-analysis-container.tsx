@@ -10,7 +10,7 @@ import { NapkinResults } from './napkin-results'
 import { GoNoGoIndicator } from './go-nogo-indicator'
 import { runNapkinAnalysis, updateDealStatus } from '@/app/actions/napkin'
 
-interface NapkinAnalysisResult {
+export interface NapkinAnalysisResult {
   noi: number
   capRate: number
   expenseRatio: number
