@@ -131,8 +131,6 @@ export async function runNapkinAnalysis(dealId: number, input: NapkinInput) {
       success: true,
       result: {
         noi,
-        capRate: aiResult.capRate,
-        expenseRatio: aiResult.expenseRatio,
         maxOfferPrice,
         annualDebtService,
         cashFlow,

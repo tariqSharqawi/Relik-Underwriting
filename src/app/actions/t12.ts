@@ -43,21 +43,21 @@ export async function saveT12DataAction(
     // Transform to database format
     const dbData = validated.map((month) => ({
       month: month.month,
-      room_rent: month.roomRent.toString(),
-      level_of_care_fees: month.locFees.toString(),
-      other_income: month.otherIncome.toString(),
+      room_rent: month.roomRent,
+      level_of_care_fees: month.locFees,
+      other_income: month.otherIncome,
       occupied_units: month.occupiedUnits,
-      payroll: month.payroll.toString(),
-      dietary: month.dietary.toString(),
-      utilities: month.utilities.toString(),
-      insurance: month.insurance.toString(),
-      management_fee: month.managementFee.toString(),
-      maintenance: month.maintenance.toString(),
-      marketing: month.marketing.toString(),
-      admin: month.admin.toString(),
-      other_expenses: month.otherExpenses.toString(),
+      payroll: month.payroll,
+      dietary: month.dietary,
+      utilities: month.utilities,
+      insurance: month.insurance,
+      management_fee: month.managementFee,
+      maintenance: month.maintenance,
+      marketing: month.marketing,
+      admin: month.admin,
+      other_expenses: month.otherExpenses,
       // Calculate total_expenses
-      total_expenses: (
+      total_expenses:
         month.payroll +
         month.dietary +
         month.utilities +
@@ -66,8 +66,7 @@ export async function saveT12DataAction(
         month.maintenance +
         month.marketing +
         month.admin +
-        month.otherExpenses
-      ).toString(),
+        month.otherExpenses,
       occupancy_rate: null, // Will be calculated by the database or app
     }))
 
@@ -99,9 +98,9 @@ export async function saveUnitMixAction(
         id: validated.id,
         unit_type: validated.unitType,
         unit_count: validated.unitCount,
-        current_rent: validated.currentRent.toString(),
-        market_rent: validated.marketRent.toString(),
-        avg_loc_fee: validated.avgLocFee.toString(),
+        current_rent: validated.currentRent,
+        market_rent: validated.marketRent,
+        avg_loc_fee: validated.avgLocFee,
       }
 
       await saveUnitMix(dealId, dbData)
