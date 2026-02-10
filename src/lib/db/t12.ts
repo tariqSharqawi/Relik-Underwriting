@@ -134,11 +134,16 @@ export async function getT12Totals(dealId: number) {
     { totalGrossRevenue: 0, totalExpenses: 0, totalNOI: 0, totalOccupancy: 0 }
   )
 
+  const avgExpenseRatio = totals.totalGrossRevenue > 0
+    ? totals.totalExpenses / totals.totalGrossRevenue
+    : 0
+
   return {
     totalGrossRevenue: totals.totalGrossRevenue,
     totalExpenses: totals.totalExpenses,
     totalNOI: totals.totalNOI,
     avgOccupancy: totals.totalOccupancy / data.length,
+    avgExpenseRatio,
     monthCount: data.length,
   }
 }
