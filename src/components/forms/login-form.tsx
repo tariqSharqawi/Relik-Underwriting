@@ -1,91 +1,70 @@
 'use client'
 
-import { useState } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { loginAction } from '@/app/actions/auth'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
-
-const loginSchema = z.object({
-  password: z.string().min(1, 'Password is required'),
-})
-
-type LoginFormValues = z.infer<typeof loginSchema>
+import { useState, type FormEvent } from 'react'
 
 export function LoginForm() {
+  const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      password: '',
-    },
-  })
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError('')
 
-  async function onSubmit(values: LoginFormValues) {
+    if (!password.trim()) {
+      setError('Password is required')
+      return
+    }
+
     setIsLoading(true)
 
     try {
-      const result = await loginAction(values.password)
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
 
-      if (result?.error) {
-        toast.error('Login failed', {
-          description: result.error,
-        })
+      const result = await res.json()
+
+      if (!res.ok || result.error) {
+        setError(result.error || 'Invalid password')
         setIsLoading(false)
         return
       }
 
-      toast.success('Login successful')
-    } catch (error) {
-      toast.error('Login failed', {
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
-      })
+      window.location.href = '/deals'
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
       setIsLoading(false)
     }
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
-                  disabled={isLoading}
-                  autoFocus
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type="submit"
-          className="w-full"
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <label htmlFor="password" className="text-sm font-medium leading-none">
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           disabled={isLoading}
-        >
-          {isLoading ? 'Signing in...' : 'Sign in'}
-        </Button>
-      </form>
-    </Form>
+          autoFocus
+          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        />
+        {error && <p className="text-sm text-red-600">{error}</p>}
+      </div>
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+      >
+        {isLoading ? 'Signing in...' : 'Sign in'}
+      </button>
+    </form>
   )
 }

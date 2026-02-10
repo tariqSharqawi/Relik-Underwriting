@@ -12,13 +12,12 @@ export async function loginAction(password: string) {
     }
 
     await setAuthCookie()
+    return { success: true }
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : 'Login failed',
     }
   }
-
-  redirect('/deals')
 }
 
 export async function logoutAction() {
