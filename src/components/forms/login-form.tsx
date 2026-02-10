@@ -36,17 +36,24 @@ export function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     setIsLoading(true)
 
-    const result = await loginAction(values.password)
+    try {
+      const result = await loginAction(values.password)
 
-    if (result?.error) {
+      if (result?.error) {
+        toast.error('Login failed', {
+          description: result.error,
+        })
+        setIsLoading(false)
+        return
+      }
+
+      toast.success('Login successful')
+    } catch (error) {
       toast.error('Login failed', {
-        description: result.error,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
       })
       setIsLoading(false)
-      return
     }
-
-    toast.success('Login successful')
   }
 
   return (

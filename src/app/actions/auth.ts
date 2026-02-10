@@ -4,13 +4,20 @@ import { redirect } from 'next/navigation'
 import { verifyPassword, setAuthCookie, clearAuthCookie } from '@/lib/auth-simple'
 
 export async function loginAction(password: string) {
-  const isValid = verifyPassword(password)
+  try {
+    const isValid = verifyPassword(password)
 
-  if (!isValid) {
-    return { error: 'Invalid password' }
+    if (!isValid) {
+      return { error: 'Invalid password' }
+    }
+
+    await setAuthCookie()
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : 'Login failed',
+    }
   }
 
-  await setAuthCookie()
   redirect('/deals')
 }
 
