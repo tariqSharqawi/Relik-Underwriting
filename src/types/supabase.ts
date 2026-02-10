@@ -590,3 +590,8 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// Convenience type aliases
+export type Deal = Database['public']['Tables']['deals']['Row']
+export type T12Financial = Database['public']['Tables']['t12_financials']['Row']
+export type ProformaRow = Database['public']['Tables']['proforma']['Row']

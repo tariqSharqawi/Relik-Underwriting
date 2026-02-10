@@ -120,6 +120,7 @@ export async function getT12Totals(dealId: number) {
       totalExpenses: 0,
       totalNOI: 0,
       avgOccupancy: 0,
+      avgExpenseRatio: 0,
       monthCount: 0,
     }
   }
