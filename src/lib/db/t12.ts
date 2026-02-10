@@ -98,7 +98,7 @@ export async function bulkSaveT12(
 /**
  * Delete a T12 month record
  */
-export async function deleteT12Month(id: string): Promise<void> {
+export async function deleteT12Month(id: number): Promise<void> {
   const supabase = createServiceClient()
 
   const { error } = await supabase.from('t12_financials').delete().eq('id', id)

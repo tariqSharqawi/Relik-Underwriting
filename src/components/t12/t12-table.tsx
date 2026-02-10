@@ -11,7 +11,7 @@ import {
 } from '@/lib/calculations/t12'
 
 interface T12MonthData {
-  id?: string
+  id?: number
   month: string
   roomRent: number
   locFees: number

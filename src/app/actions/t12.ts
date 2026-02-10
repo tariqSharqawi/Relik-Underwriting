@@ -6,7 +6,7 @@ import { bulkSaveT12, saveT12Month } from '@/lib/db/t12'
 import { saveUnitMix, deleteUnitMix } from '@/lib/db/unit-mix'
 
 const t12MonthSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   month: z.string(),
   roomRent: z.number(),
   locFees: z.number(),
@@ -24,7 +24,7 @@ const t12MonthSchema = z.object({
 })
 
 const unitMixSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   unitType: z.string(),
   unitCount: z.number().int(),
   currentRent: z.number(),
@@ -95,7 +95,6 @@ export async function saveUnitMixAction(
       const validated = unitMixSchema.parse(unit)
 
       const dbData = {
-        ...(validated.id ? { id: validated.id } : {}),
         unit_type: validated.unitType,
         unit_count: validated.unitCount,
         current_rent: validated.currentRent,
@@ -103,7 +102,7 @@ export async function saveUnitMixAction(
         avg_loc_fee: validated.avgLocFee,
       }
 
-      await saveUnitMix(dealId, dbData)
+      await saveUnitMix(dealId, dbData, validated.id)
     }
 
     revalidatePath(`/deals/${dealId}/t12`)
@@ -119,7 +118,7 @@ export async function saveUnitMixAction(
   }
 }
 
-export async function deleteUnitMixAction(id: string) {
+export async function deleteUnitMixAction(id: number) {
   try {
     await deleteUnitMix(id)
     return { success: true }

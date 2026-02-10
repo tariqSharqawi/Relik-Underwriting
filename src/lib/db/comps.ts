@@ -28,16 +28,17 @@ export async function getComps(dealId: number): Promise<Comparable[]> {
  */
 export async function saveComp(
   dealId: number,
-  compData: Omit<ComparableInsert, 'deal_id'>
+  compData: Omit<ComparableInsert, 'deal_id' | 'id'>,
+  existingId?: number
 ): Promise<Comparable> {
   const supabase = createServiceClient()
 
-  if ('id' in compData && compData.id) {
+  if (existingId) {
     // Update existing
     const { data, error } = await supabase
       .from('comparables')
       .update(compData)
-      .eq('id', compData.id)
+      .eq('id', existingId)
       .select()
       .single()
 
@@ -65,7 +66,7 @@ export async function saveComp(
 /**
  * Delete a comparable
  */
-export async function deleteComp(id: string): Promise<void> {
+export async function deleteComp(id: number): Promise<void> {
   const supabase = createServiceClient()
 
   const { error } = await supabase.from('comparables').delete().eq('id', id)

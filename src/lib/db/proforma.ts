@@ -38,15 +38,15 @@ export async function saveProforma(dealId: number, years: ProformaYear[]): Promi
   const records: ProformaInsert[] = years.map((year) => ({
     deal_id: dealId,
     year: year.year,
-    target_occupancy: year.occupancy.toString(),
-    projected_revenue: year.grossRevenue.toString(),
-    projected_expenses: year.totalExpenses.toString(),
-    projected_noi: year.noi.toString(),
-    debt_service: year.debtService.toString(),
-    cash_flow: year.cashFlow.toString(),
+    target_occupancy: year.occupancy,
+    projected_revenue: year.grossRevenue,
+    projected_expenses: year.totalExpenses,
+    projected_noi: year.noi,
+    debt_service: year.debtService,
+    cash_flow: year.cashFlow,
     is_refi_year: year.isRefiYear,
     is_exit_year: year.isExitYear,
-    capital_returned: year.capitalReturned?.toString() || null,
+    capital_returned: year.capitalReturned ?? null,
   }))
 
   const { error } = await supabase.from('proforma').insert(records)

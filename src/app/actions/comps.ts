@@ -78,7 +78,7 @@ export async function saveCompAction(
   }
 }
 
-export async function deleteCompAction(id: string) {
+export async function deleteCompAction(id: number) {
   try {
     await deleteComp(id)
     return { success: true }

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/table'
 
 interface UnitMixRow {
-  id?: string
+  id?: number
   unitType: string
   unitCount: number
   currentRent: number
@@ -25,7 +25,7 @@ interface UnitMixRow {
 interface UnitMixTableProps {
   initialData: UnitMixRow[]
   onSave: (data: UnitMixRow[]) => Promise<void>
-  onDelete?: (id: string) => Promise<void>
+  onDelete?: (id: number) => Promise<void>
 }
 
 export function UnitMixTable({ initialData, onSave, onDelete }: UnitMixTableProps) {

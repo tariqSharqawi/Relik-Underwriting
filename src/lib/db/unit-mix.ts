@@ -28,16 +28,17 @@ export async function getUnitMix(dealId: number): Promise<UnitMix[]> {
  */
 export async function saveUnitMix(
   dealId: number,
-  unitData: Omit<UnitMixInsert, 'deal_id'>
+  unitData: Omit<UnitMixInsert, 'deal_id' | 'id'>,
+  existingId?: number
 ): Promise<UnitMix> {
   const supabase = createServiceClient()
 
-  if ('id' in unitData && unitData.id) {
+  if (existingId) {
     // Update existing record
     const { data, error } = await supabase
       .from('unit_mix')
       .update(unitData)
-      .eq('id', unitData.id)
+      .eq('id', existingId)
       .select()
       .single()
 
@@ -65,7 +66,7 @@ export async function saveUnitMix(
 /**
  * Delete a unit mix record
  */
-export async function deleteUnitMix(id: string): Promise<void> {
+export async function deleteUnitMix(id: number): Promise<void> {
   const supabase = createServiceClient()
 
   const { error } = await supabase.from('unit_mix').delete().eq('id', id)

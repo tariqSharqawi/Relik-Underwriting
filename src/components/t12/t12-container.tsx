@@ -112,7 +112,7 @@ export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
     }
   }
 
-  const handleDeleteUnitMix = async (id: string) => {
+  const handleDeleteUnitMix = async (id: number) => {
     const result = await deleteUnitMixAction(id)
 
     if (result.success) {

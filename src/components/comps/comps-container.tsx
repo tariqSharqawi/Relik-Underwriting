@@ -22,7 +22,7 @@ interface CompsContainerProps {
 }
 
 export function CompsContainer({ dealId, deal, existingComps }: CompsContainerProps) {
-  const [comps, setComps] = useState<(Comparable & { id?: string; source?: 'ai' | 'manual' })[]>(
+  const [comps, setComps] = useState<(Comparable & { id?: number; source?: 'ai' | 'manual' })[]>(
     existingComps.map((comp) => ({
       id: comp.id,
       name: comp.comp_name || '',
@@ -93,7 +93,7 @@ export function CompsContainer({ dealId, deal, existingComps }: CompsContainerPr
     }
   }
 
-  const handleDeleteComp = async (id: string) => {
+  const handleDeleteComp = async (id: number) => {
     try {
       const result = await deleteCompAction(id)
 

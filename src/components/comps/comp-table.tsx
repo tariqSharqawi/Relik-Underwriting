@@ -12,10 +12,10 @@ import { Trash2 } from 'lucide-react'
 import type { Comparable } from '@/lib/ai/comp-analysis'
 
 interface CompTableProps {
-  comps: (Comparable & { id?: string; source?: 'ai' | 'manual' })[]
+  comps: (Comparable & { id?: number; source?: 'ai' | 'manual' })[]
   subjectPrice?: number
   subjectUnits?: number
-  onDelete?: (id: string) => Promise<void>
+  onDelete?: (id: number) => Promise<void>
 }
 
 export function CompTable({ comps, subjectPrice, subjectUnits, onDelete }: CompTableProps) {
