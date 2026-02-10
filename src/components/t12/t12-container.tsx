@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -47,74 +47,50 @@ interface T12MonthData {
 interface T12ContainerProps {
   dealId: number
   totalUnits: number
+  initialT12Data?: T12Month[]
+  initialUnitMixData?: UnitMixData[]
 }
 
 // Generate default 12 months if no data exists
 function generateDefaultMonths(): T12Month[] {
-  const months = []
   const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ]
 
-  for (let i = 0; i < 12; i++) {
-    months.push({
-      month: monthNames[i],
-      roomRent: 0,
-      locFees: 0,
-      otherIncome: 0,
-      grossRevenue: 0,
-      occupiedUnits: 0,
-      totalUnits: 0,
-      occupancyRate: 0,
-      payroll: 0,
-      dietary: 0,
-      utilities: 0,
-      insurance: 0,
-      managementFee: 0,
-      maintenance: 0,
-      marketing: 0,
-      admin: 0,
-      otherExpenses: 0,
-      totalExpenses: 0,
-      noi: 0,
-    })
-  }
-
-  return months
+  return monthNames.map((name) => ({
+    month: name,
+    roomRent: 0,
+    locFees: 0,
+    otherIncome: 0,
+    grossRevenue: 0,
+    occupiedUnits: 0,
+    totalUnits: 0,
+    occupancyRate: 0,
+    payroll: 0,
+    dietary: 0,
+    utilities: 0,
+    insurance: 0,
+    managementFee: 0,
+    maintenance: 0,
+    marketing: 0,
+    admin: 0,
+    otherExpenses: 0,
+    totalExpenses: 0,
+    noi: 0,
+  }))
 }
 
-export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
-  const [t12Data, setT12Data] = useState<T12Month[]>(generateDefaultMonths())
-  const [unitMixData, setUnitMixData] = useState<UnitMixData[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Fetch data on mount
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // TODO: Fetch T12 data from API
-        // For now, using default data
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching T12 data:', error)
-        toast.error('Failed to load T12 data')
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [dealId])
+export function T12Container({
+  dealId,
+  totalUnits,
+  initialT12Data,
+  initialUnitMixData,
+}: T12ContainerProps) {
+  const [t12Data, setT12Data] = useState<T12Month[]>(
+    initialT12Data && initialT12Data.length > 0 ? initialT12Data : generateDefaultMonths()
+  )
+  const [unitMixData, setUnitMixData] = useState<UnitMixData[]>(initialUnitMixData || [])
 
   const handleSaveT12 = async (data: T12MonthData[]) => {
     const result = await saveT12DataAction(dealId, data)
@@ -182,10 +158,6 @@ export function T12Container({ dealId, totalUnits }: T12ContainerProps) {
     }).format(value)
 
   const formatPercent = (value: number) => `${(value * 100).toFixed(1)}%`
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
 
   return (
     <div className="space-y-6">
